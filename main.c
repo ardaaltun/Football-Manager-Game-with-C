@@ -7,6 +7,12 @@ typedef enum favoriteleg
 	left
 };
 
+typedef enum ContractInfo
+{
+	FREE,
+	RENTED,
+	SIGNED
+};
 char prefleg(enum favoriteleg leg)
 {
 	return leg == right ? 'R' : 'L';
@@ -21,15 +27,17 @@ typedef struct Player
 	int age;
 	int height;
 	int weight;
-	
-};
+	enum ContractInfo contractInfo;
+	struct Team* team;
+};//Player_Default = {"xxx", "yyy", right, 18, 170,70, FREE, NULL};
 
-void ShowStats(struct Player player)
+void ShowStats(struct Player* player)
 {
-	printf("Name: %s %s\n", player.fname, player.lname);
-	printf("Age: %d\n", player.age);
-	printf("Weight: %d cm - Height: %d kg\n", player.weight, player.height);
+	printf("Name: %s %s\n", player->fname, player->lname);
+	printf("Age: %d\n", player->age);
+	printf("Weight: %d cm - Height: %d kg\n", player->weight, player->height);
 	printf("Preffered Leg: %c\n", prefleg(left));
+	printf("Team: %p\n", &player->team);
 }
 
 typedef struct Team
@@ -37,7 +45,7 @@ typedef struct Team
 	char name[30];
 	int playerCount;
 	struct Player squad[3];
-};
+} ;
 
 typedef struct League
 {
@@ -54,17 +62,20 @@ int main()
 	struct Player arda = {"Arda", "Altun", left, 24,78,180};
 	struct Player buny = {"Bunyamin", "Cakmak", right, 23, 70, 175};
 	struct Team gs = {"Galatasaray", 0};
-	SignPlayer(gs,arda);
+	SignPlayer(&	gs,&arda);
 	ListPlayers();
-	//ShowStats(arda);
+	ShowStats(&arda);
+	printf("--%p--", &gs);
 	getchar();
 	return 0;
 }
 
-void SignPlayer(struct Team team, struct Player p)
+void SignPlayer(struct Team* team, struct Player* p)
 {
-	team.squad[team.playerCount] = p;
-	team.playerCount++;
+	team->squad[team->playerCount] = *p;
+	printf("cccccccc\n");
+	team->playerCount++;
+	p->team = team;
 }
 
 void ListPlayers(struct Team team)
