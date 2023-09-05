@@ -1,48 +1,17 @@
-#include <stdio.h>
-#include <string.h>
 #include "team.h"
 #include "player.h"
-
+#include "misc.h"
 
 #define SIZE(array) (sizeof(array)) / (sizeof(array[0]]))
 
 
-struct Player* CreatePlayerDefault()
-{
-	struct Player* p = malloc(sizeof(struct Player));//{"xxx", "yyy", right, 18, 170,70, FREE, NULL};
-	strcpy(p->fname, "Name");
-	strcpy(p->lname, "Surname");
-	p->leg = right;
-	p->age = 18;
-	p->height = 170;
-	p->weight = 70;
-	p->contractInfo = FREE;
-	p->team = NULL;
-	return p;
-}
-struct Player* CreatePlayer(char name[], char surname[], enum favoriteleg favleg, int age, int height, int weight, enum ContractInfo contractinfo, struct Team* team)
-{
-	struct Player* p = malloc(sizeof(struct Player));//{"xxx", "yyy", right, 18, 170,70, FREE, NULL};
-	strcpy(p->fname, name);
-	strcpy(p->lname, surname);
-	p->leg = favleg;
-	p->age = age;
-	p->height = height;
-	p->weight = weight;
-	p->contractInfo = contractinfo;
-	p->team = team;
-	return p;
-}
-
-
-
-
-
-
 int main()
 {
-	///struct Player arda = {"Arda", "Altun", left, 24,78,180};
+	//First created the player with default values, and then assigned the values via a function	
 	struct Player* arda = CreatePlayerDefault();
+	EditPlayer(arda, "Arda", "Altun", left, 25, 180, 78, FREE, NULL);
+
+	//Created a player directly with the real values.
 	struct Player* bunyamin = CreatePlayer("Bunyamin", "Cakmak", right, 23, 70, 175, FREE, NULL);
 	struct Team gs = {"Galatasaray", 0};
 	SignPlayer(&gs,arda);
@@ -53,7 +22,11 @@ int main()
 	getchar();
 
 
-	free(arda);
+	//free(arda);
+	// arda = NULL;
+	// free(bunyamin);
+	Free(arda);
+	Free(bunyamin);
 	return 0;
 }
 
